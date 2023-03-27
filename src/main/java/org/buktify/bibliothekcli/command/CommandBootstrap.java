@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import org.buktify.bibliothekcli.command.processor.CommandProcessor;
+import org.buktify.bibliothekcli.data.bootstrap.DataBootstrap;
+import org.buktify.bibliothekcli.util.RenderUtility;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.SortedMap;
 
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -23,30 +26,26 @@ import java.util.Arrays;
 public class CommandBootstrap implements CommandLineRunner, ApplicationContextAware {
 
     CommandProcessor commandProcessor;
-    @NonFinal
-    @Value("${application.version}")
-    String version;
+    DataBootstrap dataBootstrap;
     @NonFinal
     ConfigurableApplicationContext applicationContext;
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("""
-                    __    _ __    ___       __  __         __              ___\s
-                   / /_  (_) /_  / (_)___  / /_/ /_  ___  / /__      _____/ (_)
-                  / __ \\/ / __ \\/ / / __ \\/ __/ __ \\/ _ \\/ //_/_____/ ___/ / /\s
-                 / /_/ / / /_/ / / / /_/ / /_/ / / /  __/ ,< /_____/ /__/ / / \s
-                /_.___/_/_.___/_/_/\\____/\\__/_/ /_/\\___/_/|_|      \\___/_/_/""");
-        System.out.println("                              Running version " + version);
-        System.out.println("Enter command");
-        System.out.print("> ");
+        RenderUtility.renderHeader();
+        System.out.println("Booting... Receiving version data...");
+        RenderUtility.clearScreen();
+        dataBootstrap.init();
+        RenderUtility.renderHeader();
         String line;
+        System.out.print("bibliothek-cli> ");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (!(line = reader.readLine()).equals("exit")) {
             String[] arguments = line.split(" ");
             commandProcessor.process(arguments[0], Arrays.stream(Arrays.copyOfRange(arguments, 1, arguments.length)).toList());
-            System.out.print("> ");
+            System.out.print("bibliothek-cli> ");
         }
+        System.out.println("Shutting down...");
         applicationContext.close();
     }
 

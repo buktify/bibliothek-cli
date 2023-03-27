@@ -8,4 +8,5 @@ spring:
     banner-mode: off
 
 application:
-  version: 0.1
+  version: 0.1dev
+  api-url: "https://api.papermc.io/v2/"
