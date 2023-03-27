@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BibliothekCliApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BibliothekCliApplication.class, args);
+        SpringApplication springApplication = new SpringApplication(BibliothekCliApplication.class);
+        springApplication.run(args);
     }
 
 }

@@ -1,0 +1,11 @@
+logging:
+  level:
+    web: off
+    root: off
+
+spring:
+  main:
+    banner-mode: off
+
+application:
+  version: 0.1
