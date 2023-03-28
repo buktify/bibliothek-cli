@@ -1,7 +1,5 @@
 package org.buktify.bibliothekcli.data.bootstrap;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.buktify.bibliothekcli.data.bootstrap.response.ProjectVersionsResponse;
 import org.buktify.bibliothekcli.data.image.FileImage;
 import org.buktify.bibliothekcli.data.image.impl.DownloadableFileImage;

@@ -4,11 +4,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
+import org.buktify.bibliothekcli.cli.reader.impl.SimpleTerminalReader;
+import org.buktify.bibliothekcli.cli.writer.impl.SimpleTerminalWriter;
 import org.buktify.bibliothekcli.command.processor.CommandProcessor;
 import org.buktify.bibliothekcli.data.bootstrap.DataBootstrap;
 import org.buktify.bibliothekcli.util.RenderUtility;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.SortedMap;
 
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -29,6 +29,9 @@ public class CommandBootstrap implements CommandLineRunner, ApplicationContextAw
     DataBootstrap dataBootstrap;
     @NonFinal
     ConfigurableApplicationContext applicationContext;
+
+    SimpleTerminalWriter writer = new SimpleTerminalWriter();
+    SimpleTerminalReader reader = new SimpleTerminalReader();
 
     @Override
     public void run(String... args) throws Exception {

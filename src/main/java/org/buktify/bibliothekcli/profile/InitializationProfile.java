@@ -2,7 +2,7 @@ package org.buktify.bibliothekcli.profile;
 
 public interface InitializationProfile {
 
-    String getServerName();
+    InitializationType getInitializationType();
 
     enum InitializationType {
         VELOCITY,
