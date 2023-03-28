@@ -29,6 +29,9 @@ public class CommandBootstrap implements CommandLineRunner, ApplicationContextAw
     DataBootstrap dataBootstrap;
     @NonFinal
     ConfigurableApplicationContext applicationContext;
+    @Value("${application.version}")
+    @NonFinal
+    String version;
 
     SimpleTerminalWriter writer = new SimpleTerminalWriter();
     SimpleTerminalReader reader = new SimpleTerminalReader();
@@ -36,19 +39,18 @@ public class CommandBootstrap implements CommandLineRunner, ApplicationContextAw
     @Override
     public void run(String... args) throws Exception {
         RenderUtility.renderHeader();
-        System.out.println("Booting... Receiving version data...");
-        RenderUtility.clearScreen();
+        RenderUtility.printMessage("Booting... Receiving version data...");
         dataBootstrap.init();
-        RenderUtility.renderHeader();
+        RenderUtility.printMessage("Done! Running version " + version);
         String line;
-        System.out.print("bibliothek-cli> ");
+        RenderUtility.printEmpty();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (!(line = reader.readLine()).equals("exit")) {
             String[] arguments = line.split(" ");
             commandProcessor.process(arguments[0], Arrays.stream(Arrays.copyOfRange(arguments, 1, arguments.length)).toList());
-            System.out.print("bibliothek-cli> ");
+            RenderUtility.printEmpty();
         }
-        System.out.println("Shutting down...");
+        RenderUtility.printMessage("Shutting down...");
         applicationContext.close();
     }
 

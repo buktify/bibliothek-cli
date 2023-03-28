@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.buktify.bibliothekcli.data.bootstrap.response.BuildsResponse;
 import org.buktify.bibliothekcli.data.image.DownloadableFile;
 import org.buktify.bibliothekcli.data.image.FileImage;
 
@@ -14,7 +15,7 @@ public class DownloadableFileImage implements DownloadableFile, FileImage {
 
     String version;
     ImageType imageType;
-    String downloadUrl;
+    BuildsResponse.Build lastestBuild;
 
     @Override
     public void download() {
