@@ -4,6 +4,10 @@ public interface InitializationProfile {
 
     InitializationType getInitializationType();
 
+    String getServerName();
+
+    int getServerPort();
+
     enum InitializationType {
         VELOCITY,
         PAPER

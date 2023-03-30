@@ -1,7 +1,16 @@
 package org.buktify.bibliothekcli.cli.reader;
 
-@FunctionalInterface
+import org.buktify.bibliothekcli.cli.reader.input.Type;
+
 public interface TerminalReader {
 
-    String read();
+    <T> T read(String request, Type<T> type);
+
+    <T> T read(Type<T> type);
+
+    <T> T forceRead(String request, Type<T> type);
+
+    void processOptionalChoice(String request, Runnable optional);
+
+    void processYesNoChoice(String request, Runnable positive, Runnable negative);
 }

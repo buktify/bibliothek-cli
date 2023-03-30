@@ -1,6 +1,6 @@
 package org.buktify.bibliothekcli.data.image;
 
-public interface FileImage{
+public interface FileImage {
 
     String getVersion();
 

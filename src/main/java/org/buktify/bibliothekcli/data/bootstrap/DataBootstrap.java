@@ -1,10 +1,12 @@
 package org.buktify.bibliothekcli.data.bootstrap;
 
-import org.buktify.bibliothekcli.data.image.DownloadableFile;
+import org.buktify.bibliothekcli.data.bootstrap.exception.FIleDownloadingException;
 import org.buktify.bibliothekcli.data.image.FileImage;
 import org.buktify.bibliothekcli.data.image.impl.DownloadableFileImage;
 
+import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 public interface DataBootstrap {
 
@@ -12,8 +14,10 @@ public interface DataBootstrap {
 
     void bootstrap(DownloadableFileImage dataHolder);
 
+    void download(DownloadableFileImage downloadableFile, File file) throws FIleDownloadingException;
+
     List<DownloadableFileImage> getByType(FileImage.ImageType imageType);
 
-    List<DownloadableFileImage> getByTypeAndVersion(FileImage.ImageType imageType, String version);
+    Optional<DownloadableFileImage> getByTypeAndVersion(FileImage.ImageType imageType, String version);
 
 }

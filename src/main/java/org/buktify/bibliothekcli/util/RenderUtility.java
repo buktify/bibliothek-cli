@@ -11,15 +11,16 @@ public class RenderUtility {
                    / /_  (_) /_  / (_)___  / /_/ /_  ___  / /__      _____/ (_)
                   / __ \\/ / __ \\/ / / __ \\/ __/ __ \\/ _ \\/ //_/_____/ ___/ / /\s
                  / /_/ / / /_/ / / / /_/ / /_/ / / /  __/ ,< /_____/ /__/ / / \s
-                /_.___/_/_.___/_/_/\\____/\\__/_/ /_/\\___/_/|_|      \\___/_/_/""");
+                /_.___/_/_.___/_/_/\\____/\\__/_/ /_/\\___/_/|_|      \\___/_/_/
+                """);
     }
 
-    public void printMessage(String message){
+    public void printMessage(String message) {
         System.out.println("bibliothek-cli> " + message);
     }
 
-    public void printEmpty(){
-        printMessage("");
+    public void printEmpty() {
+        System.out.print("bibliothek-cli> ");
     }
 
 }

@@ -6,6 +6,5 @@ public interface DownloadableFile {
 
     BuildsResponse.Build getLastestBuild();
 
-    void download();
 
 }

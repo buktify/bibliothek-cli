@@ -1,10 +1,12 @@
 package org.buktify.bibliothekcli.shell;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @RequiredArgsConstructor
+@Getter
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public enum OptimizationShellFlags {
 

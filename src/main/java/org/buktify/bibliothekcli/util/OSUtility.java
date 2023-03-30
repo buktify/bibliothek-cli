@@ -9,15 +9,8 @@ public class OSUtility {
 
     private static final OSType detectedOsType = detectOperationSystemType();
 
-    public OSType getOsType(){
+    public OSType getOsType() {
         return detectedOsType;
-    }
-
-    public enum OSType {
-        WINDOWS,
-        MAC,
-        LINUX,
-        OTHER
     }
 
     private OSType detectOperationSystemType() {
@@ -32,6 +25,13 @@ public class OSUtility {
             return OSType.LINUX;
         }
         return OSType.OTHER;
+    }
+
+    public enum OSType {
+        WINDOWS,
+        MAC,
+        LINUX,
+        OTHER
     }
 
 }

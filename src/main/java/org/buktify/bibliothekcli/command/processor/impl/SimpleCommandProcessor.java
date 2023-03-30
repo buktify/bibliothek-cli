@@ -27,7 +27,7 @@ public class SimpleCommandProcessor implements CommandProcessor, ApplicationCont
             return;
         }
         if (bean instanceof CommandAction commandAction) {
-            commandAction.execute(arguments);
+            commandAction.execute();
             return;
         }
         System.out.println("Invalid command, try \"help\"");

@@ -4,12 +4,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
-import org.buktify.bibliothekcli.cli.reader.impl.SimpleTerminalReader;
-import org.buktify.bibliothekcli.cli.writer.impl.SimpleTerminalWriter;
 import org.buktify.bibliothekcli.command.processor.CommandProcessor;
 import org.buktify.bibliothekcli.data.bootstrap.DataBootstrap;
 import org.buktify.bibliothekcli.util.RenderUtility;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -29,19 +28,17 @@ public class CommandBootstrap implements CommandLineRunner, ApplicationContextAw
     DataBootstrap dataBootstrap;
     @NonFinal
     ConfigurableApplicationContext applicationContext;
-    @Value("${application.version}")
     @NonFinal
+    @Value("${application.version}")
     String version;
 
-    SimpleTerminalWriter writer = new SimpleTerminalWriter();
-    SimpleTerminalReader reader = new SimpleTerminalReader();
 
     @Override
     public void run(String... args) throws Exception {
         RenderUtility.renderHeader();
-        RenderUtility.printMessage("Booting... Receiving version data...");
+        System.out.println("Booting... Receiving version data...");
         dataBootstrap.init();
-        RenderUtility.printMessage("Done! Running version " + version);
+        System.out.println("Done! Running version " + version + "\n");
         String line;
         RenderUtility.printEmpty();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -50,7 +47,7 @@ public class CommandBootstrap implements CommandLineRunner, ApplicationContextAw
             commandProcessor.process(arguments[0], Arrays.stream(Arrays.copyOfRange(arguments, 1, arguments.length)).toList());
             RenderUtility.printEmpty();
         }
-        RenderUtility.printMessage("Shutting down...");
+        System.out.println("Shutting down...");
         applicationContext.close();
     }
 
