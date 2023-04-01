@@ -7,11 +7,13 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
-import org.buktify.bibliothekcli.data.bootstrap.exception.FIleDownloadingException;
+import lombok.experimental.NonFinal;
+import org.buktify.bibliothekcli.cli.writer.TerminalWriter;
 import org.buktify.bibliothekcli.data.bootstrap.response.BuildsResponse;
 import org.buktify.bibliothekcli.data.bootstrap.response.ProjectVersionsResponse;
 import org.buktify.bibliothekcli.data.image.FileImage;
 import org.buktify.bibliothekcli.data.image.impl.DownloadableFileImage;
+import org.buktify.bibliothekcli.util.Localization;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -32,20 +34,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class FileImageDataBootstrap implements DataBootstrap, ApplicationContextAware {
 
-    final List<DownloadableFileImage> bootstrappedImages = new ArrayList<>();
-    final RestTemplate restTemplate = new RestTemplate();
+    TerminalWriter terminalWriter;
+    List<DownloadableFileImage> bootstrappedImages = new ArrayList<>();
+    RestTemplate restTemplate = new RestTemplate();
+    @NonFinal
     ConfigurableApplicationContext applicationContext;
+    @NonFinal
     @Value("${application.api-url}")
     private String apiUrl;
 
     @Override
     public void init() {
         for (FileImage.ImageType imageType : FileImage.ImageType.values()) {
-            System.out.println("Receiving " + imageType.name().toLowerCase() + " version an build data");
+            terminalWriter.writeln(Objects.requireNonNull(Localization.localized("version-data-message")).replaceAll("%product%", imageType.name().toLowerCase()));
             try {
                 List<String> versions = Objects.requireNonNull(restTemplate.getForObject(apiUrl + "projects/" + imageType.name().toLowerCase(), ProjectVersionsResponse.class)).getVersions();
                 for (String version : versions) {
@@ -55,7 +60,7 @@ public class FileImageDataBootstrap implements DataBootstrap, ApplicationContext
                     bootstrap(new DownloadableFileImage(version, imageType, lastest));
                 }
             } catch (HttpClientErrorException exception) {
-                System.out.println("Error receiving data! Please, check yor internet connection");
+                terminalWriter.localizedWriteln("version-data-error");
                 applicationContext.close();
                 System.exit(0);
             }
@@ -64,17 +69,18 @@ public class FileImageDataBootstrap implements DataBootstrap, ApplicationContext
 
     @Override
     @SneakyThrows(IOException.class)
-    public void download(DownloadableFileImage downloadableFile, File file) throws FIleDownloadingException {
+    @SuppressWarnings("all")
+    public void download(DownloadableFileImage downloadableFile, File file) throws FileDownloadingException {
         /*
          * Creating parent directories and file if not exists
          */
         if (file.getParentFile() != null) file.getParentFile().mkdirs();
         file.createNewFile();
-        ResponseEntity<byte[]> response = null;
+        ResponseEntity<byte[]> response;
         try {
             response = restTemplate.getForEntity(apiUrl + "projects/" + downloadableFile.getImageType().name().toLowerCase() + "/versions/" + downloadableFile.getVersion() + "/builds/" + downloadableFile.getLastestBuild().getBuild() + "/downloads/" + downloadableFile.getLastestBuild().getDownloads().getApplication().getName(), byte[].class);
         } catch (HttpClientErrorException exception) {
-            throw new FIleDownloadingException("Error downloading " + downloadableFile.getLastestBuild().getDownloads().getApplication().getName() + ". Could not connect to PaperMC servers");
+            throw new FileDownloadingException("Error downloading " + downloadableFile.getLastestBuild().getDownloads().getApplication().getName() + ". Could not connect to PaperMC servers");
         }
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         fileOutputStream.write(Objects.requireNonNull(response.getBody()));
@@ -87,7 +93,7 @@ public class FileImageDataBootstrap implements DataBootstrap, ApplicationContext
         String checksum = byteSource.hash(Hashing.sha256()).toString();
         if (!checksum.equals(expectedChecksum)) {
             file.delete();
-            throw new FIleDownloadingException("Error downloading " + downloadableFile.getLastestBuild().getDownloads().getApplication().getName() + ". Got " + checksum + "SHA256 but expected " + expectedChecksum);
+            throw new FileDownloadingException("Error downloading " + downloadableFile.getLastestBuild().getDownloads().getApplication().getName() + ". Got " + checksum + "SHA256 but expected " + expectedChecksum);
         }
     }
 
@@ -109,5 +115,11 @@ public class FileImageDataBootstrap implements DataBootstrap, ApplicationContext
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = (ConfigurableApplicationContext) applicationContext;
+    }
+
+    public static class FileDownloadingException extends Exception {
+        public FileDownloadingException(String message) {
+            super(message);
+        }
     }
 }

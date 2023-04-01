@@ -1,0 +1,20 @@
+{
+  "booting-message": "Launching the application, please wait...",
+  "booting-ok": "Done! Current version: %version%\n",
+  "shutting-down": "Good luck, see you soon :3",
+  "version-data-message": "Receiving %product% version and build data",
+  "version-data-error": "Error getting data! Please check your network connection",
+  "init-start": "Ok, let's start with configuring the profile.",
+  "init-select-product": "Select what you want to install",
+  "paper-select-version": "Select the version you want to keep",
+  "paper-select-name": "Enter the name of your server.",
+  "paper-select-name-description": "The name of the server will be the company with the name of the directory in the colcon server will be created.",
+  "paper-select-port-opt": "Would you like to change the port or stay default",
+  "paper-select-port": "Select the port your server will be on the computer",
+  "paper-select-connect-to-velocity-opt": "Do you want to connect the server to Velocity",
+  "paper-select-connect-to-velocity": "Enter your proxy server folder\nIf the proxy server is not already configured, please configure it first",
+  "paper-select-flags-opt": "You want to use Aikar's optimization flags",
+  "directory-already-exists-with-files": "The given directory already exists and contains the files you want to continue",
+  "directory-is-a-file": "A file with the same name already exists",
+  "directory-already-exists": "This directory already exists, do you want to continue"
+}

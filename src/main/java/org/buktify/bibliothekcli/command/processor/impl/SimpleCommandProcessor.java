@@ -9,8 +9,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SimpleCommandProcessor implements CommandProcessor, ApplicationContextAware {
@@ -18,7 +16,7 @@ public class SimpleCommandProcessor implements CommandProcessor, ApplicationCont
     ApplicationContext applicationContext;
 
     @Override
-    public void process(String command, List<String> arguments) {
+    public void process(String command) {
         Object bean;
         try {
             bean = applicationContext.getBean(command + "Action");

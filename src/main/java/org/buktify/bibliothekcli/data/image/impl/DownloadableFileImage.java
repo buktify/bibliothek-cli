@@ -16,4 +16,9 @@ public class DownloadableFileImage implements DownloadableFile, FileImage {
     String version;
     ImageType imageType;
     BuildsResponse.Build lastestBuild;
+
+    @Override
+    public String getCanonicalFileName() {
+        return imageType.name().toLowerCase() + "-" + version + ".jar";
+    }
 }

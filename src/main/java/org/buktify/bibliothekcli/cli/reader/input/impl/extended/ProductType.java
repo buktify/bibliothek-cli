@@ -3,14 +3,15 @@ package org.buktify.bibliothekcli.cli.reader.input.impl.extended;
 import lombok.SneakyThrows;
 import org.buktify.bibliothekcli.cli.reader.input.Type;
 import org.buktify.bibliothekcli.cli.reader.input.Validatable;
-import org.buktify.bibliothekcli.profile.InitializationProfile;
+import org.buktify.bibliothekcli.data.image.FileImage;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 
-public class ProductType implements Type<InitializationProfile.InitializationType>, Validatable {
+public class ProductType implements Type<FileImage.ImageType>, Validatable {
 
     @Override
-    public boolean isValid(String item) {
+    public boolean isValid(@NotNull String item) {
         return item.equalsIgnoreCase("paper") || item.equalsIgnoreCase("velocity");
     }
 
@@ -21,8 +22,8 @@ public class ProductType implements Type<InitializationProfile.InitializationTyp
 
     @Override
     @SneakyThrows
-    public InitializationProfile.InitializationType secureGet(BufferedReader reader) {
+    public FileImage.ImageType secureGet(@NotNull BufferedReader reader) {
         String line = reader.readLine();
-        return isValid(line) ? InitializationProfile.InitializationType.valueOf(line.toUpperCase()) : null;
+        return isValid(line) ? FileImage.ImageType.valueOf(line.toUpperCase()) : null;
     }
 }

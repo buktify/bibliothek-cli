@@ -1,6 +1,5 @@
 package org.buktify.bibliothekcli.data.bootstrap;
 
-import org.buktify.bibliothekcli.data.bootstrap.exception.FIleDownloadingException;
 import org.buktify.bibliothekcli.data.image.FileImage;
 import org.buktify.bibliothekcli.data.image.impl.DownloadableFileImage;
 
@@ -14,7 +13,7 @@ public interface DataBootstrap {
 
     void bootstrap(DownloadableFileImage dataHolder);
 
-    void download(DownloadableFileImage downloadableFile, File file) throws FIleDownloadingException;
+    void download(DownloadableFileImage downloadableFile, File file) throws FileImageDataBootstrap.FileDownloadingException;
 
     List<DownloadableFileImage> getByType(FileImage.ImageType imageType);
 

@@ -1,7 +1,16 @@
 package org.buktify.bibliothekcli.cli.writer;
 
-@FunctionalInterface
+import org.jetbrains.annotations.NotNull;
+
 public interface TerminalWriter {
 
-    void write(String input);
+    void write(@NotNull String input);
+
+    void writeln(@NotNull String string);
+
+    void localizedWrite(@NotNull String key);
+
+    void localizedWriteln(@NotNull String key);
+
+    void preparePromptInput();
 }

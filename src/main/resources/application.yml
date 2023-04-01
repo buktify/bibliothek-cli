@@ -9,4 +9,5 @@ spring:
 
 application:
   version: 0.1dev
+  prompt-prefix: "bibliothek-cli> "
   api-url: "https://api.papermc.io/v2/"

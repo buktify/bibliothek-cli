@@ -6,6 +6,8 @@ public interface FileImage {
 
     ImageType getImageType();
 
+    String getCanonicalFileName();
+
     enum ImageType {
         PAPER,
         VELOCITY
