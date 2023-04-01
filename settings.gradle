@@ -1,1 +1,19 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+    repositoriesMode.set RepositoriesMode.FAIL_ON_PROJECT_REPOS
+}
+
+
 rootProject.name = 'bibliothek-cli'
+
+['cli', 'bootstrap', 'localization'].forEach { include(it) }
+
