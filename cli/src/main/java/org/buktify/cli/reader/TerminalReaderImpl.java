@@ -10,19 +10,24 @@ import org.buktify.cli.reader.input.Validatable;
 import org.buktify.cli.writer.TerminalWriter;
 import org.buktify.localization.Localization;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
-@Component
 @FieldDefaults(level = AccessLevel.PACKAGE, makeFinal = true)
 @RequiredArgsConstructor
 public class TerminalReaderImpl implements TerminalReader {
 
     TerminalWriter terminalWriter;
     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+    @SneakyThrows
+    @Override
+    public <T> T read(@NotNull Type<T> type) {
+        terminalWriter.preparePromptInput();
+        return type.secureGet(bufferedReader);
+    }
 
     @Override
     public <T> T read(@NotNull String request, @NotNull Type<T> type) {
@@ -35,20 +40,18 @@ public class TerminalReaderImpl implements TerminalReader {
         return read(Objects.requireNonNull(Localization.localized(request)), type);
     }
 
-    @SneakyThrows
     @Override
-    public <T> T read(@NotNull Type<T> type) {
-        terminalWriter.preparePromptInput();
-        return type.secureGet(bufferedReader);
+    public <T> @NotNull T forceRead(@NotNull Type<T> type) {
+        while (true) {
+            T result = read(type);
+            if (result != null) return result;
+        }
     }
 
     @Override
     public <T> @NotNull T forceRead(@NotNull String request, @NotNull Type<T> type) {
         terminalWriter.writeln(request + (type instanceof Validatable validatable ? " " + validatable.getHint() : ""));
-        while (true) {
-            T result = read(type);
-            if (result != null) return result;
-        }
+        return forceRead(type);
     }
 
     @Override
@@ -64,7 +67,8 @@ public class TerminalReaderImpl implements TerminalReader {
 
     @Override
     public void processLocalizedOptionalChoice(@NotNull String request, @NotNull Runnable optional) {
-         processLocalizedYesNoChoice(request, optional, () -> {});
+        processLocalizedYesNoChoice(request, optional, () -> {
+        });
     }
 
     @Override

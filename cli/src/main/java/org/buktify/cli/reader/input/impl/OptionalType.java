@@ -1,8 +1,7 @@
-package org.buktify.cli.reader.input.impl.extended;
+package org.buktify.cli.reader.input.impl;
 
 import lombok.SneakyThrows;
 import org.buktify.cli.reader.input.Validatable;
-import org.buktify.cli.reader.input.impl.StringType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;

@@ -4,12 +4,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
-import org.buktify.bibliothekcli.cli.reader.TerminalReader;
-import org.buktify.cli.reader.input.InputType;
-import org.buktify.bibliothekcli.cli.writer.TerminalWriter;
 import org.buktify.bibliothekcli.command.processor.CommandProcessor;
 import org.buktify.bibliothekcli.data.bootstrap.DataBootstrap;
-import org.buktify.bibliothekcli.util.Localization;
+import org.buktify.cli.reader.TerminalReader;
+import org.buktify.cli.reader.input.InputType;
+import org.buktify.cli.writer.TerminalWriter;
+import org.buktify.localization.Localization;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,11 +41,7 @@ public class CommandBootstrap implements CommandLineRunner, ApplicationContextAw
     @Override
     public void run(String... args) {
         renderHeader();
-        String locale = reader.read("Select locale", InputType.LOCALE);
-        try {
-            Localization.init(resourceLoader, locale);
-        }
-        catch (Exception ignored){
+        if (!Localization.init(resourceLoader, reader.forceRead("Select locale", InputType.LOCALE))) {
             writer.writeln("Error during initializing localization");
             applicationContext.close();
             return;
@@ -54,7 +50,7 @@ public class CommandBootstrap implements CommandLineRunner, ApplicationContextAw
         dataBootstrap.init();
         writer.write(Objects.requireNonNull(Localization.localized("booting-ok")).replaceAll("%version%", version));
         String line;
-        while (!(line = reader.read(InputType.STRING)).equals("exit")) {
+        while (!(line = reader.forceRead(InputType.STRING)).equals("exit")) {
             String[] arguments = line.split(" ");
             commandProcessor.process(arguments[0]);
         }

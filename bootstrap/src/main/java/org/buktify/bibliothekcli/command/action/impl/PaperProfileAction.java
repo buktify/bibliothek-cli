@@ -1,19 +1,17 @@
-package org.buktify.bibliothekcli.command.action.impl.profile.impl;
+package org.buktify.bibliothekcli.command.action.impl;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.buktify.bibliothekcli.cli.reader.TerminalReader;
-import org.buktify.cli.reader.input.InputType;
-import org.buktify.cli.reader.input.impl.extended.PaperVersionType;
-import org.buktify.bibliothekcli.cli.writer.TerminalWriter;
 import org.buktify.bibliothekcli.command.action.CommandAction;
-import org.buktify.bibliothekcli.command.action.impl.profile.ProfileAction;
 import org.buktify.bibliothekcli.data.bootstrap.DataBootstrap;
+import org.buktify.bibliothekcli.input.PaperVersionType;
 import org.buktify.bibliothekcli.profile.InitializationProfile;
 import org.buktify.bibliothekcli.profile.impl.PaperProfile;
 import org.buktify.bibliothekcli.profile.procsessor.impl.PaperProfileProcessor;
-import org.jetbrains.annotations.NotNull;
+import org.buktify.cli.reader.TerminalReader;
+import org.buktify.cli.reader.input.InputType;
+import org.buktify.cli.writer.TerminalWriter;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -23,7 +21,7 @@ import java.util.Objects;
 @Component("initPaperAction")
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class PaperProfileAction implements ProfileAction<PaperProfile>, CommandAction {
+public class PaperProfileAction implements CommandAction {
 
     PaperProfile.PaperProfileBuilder builder = PaperProfile.builder();
     TerminalReader reader;
@@ -61,14 +59,7 @@ public class PaperProfileAction implements ProfileAction<PaperProfile>, CommandA
             String proxyFolder = reader.localizedRead("paper-select-connect-to-velocity", InputType.STRING);
             builder.proxyConnectionProfile(new PaperProfile.ProxyConnectionProfile(proxyFolder));
         });
-        reader.processLocalizedOptionalChoice("paper-select-flags-opt", () -> {
-            builder.optimizationShellFlags(InitializationProfile.OptimizationShellFlags.AIKAR);
-        });
-        profileProcessor.process(getProfile());
-    }
-
-    @Override
-    public @NotNull PaperProfile getProfile() {
-        return builder.build();
+        reader.processLocalizedOptionalChoice("paper-select-flags-opt", () -> builder.optimizationShellFlags(InitializationProfile.OptimizationShellFlags.AIKAR));
+        profileProcessor.process(builder.build());
     }
 }

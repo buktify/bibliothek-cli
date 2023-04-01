@@ -12,6 +12,8 @@ public interface TerminalReader {
 
     @Nullable <T> T read(@NotNull Type<T> type);
 
+    @NotNull <T> T forceRead(@NotNull Type<T> type);
+
     @NotNull <T> T forceRead(@NotNull String request, @NotNull Type<T> type);
 
     @NotNull <T> T localizedForceRead(@NotNull String request, @NotNull Type<T> type);

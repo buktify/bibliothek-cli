@@ -1,9 +1,9 @@
-package org.buktify.cli.reader.input.impl.extended;
+package org.buktify.bibliothekcli.input;
 
 import lombok.SneakyThrows;
+import org.buktify.bibliothekcli.data.image.FileImage;
 import org.buktify.cli.reader.input.Type;
 import org.buktify.cli.reader.input.Validatable;
-import org.buktify.bibliothekcli.data.image.FileImage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;

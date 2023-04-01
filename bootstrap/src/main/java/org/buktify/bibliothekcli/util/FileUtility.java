@@ -22,7 +22,6 @@ public class FileUtility {
             }
             return true;
         } catch (Exception ignored) {
-            System.out.println(ignored);
             return false;
         }
     }

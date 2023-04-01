@@ -1,22 +1,18 @@
 package org.buktify.cli.writer;
 
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
 import org.buktify.localization.Localization;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
-@Component
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class TerminalWriterImpl implements TerminalWriter {
 
-    @Value("${application.prompt-prefix}")
-    @NonFinal
-    private String promptPrefix;
+    String promptPrefix;
 
     @Override
     public void write(@NotNull String input) {

@@ -1,14 +1,14 @@
-package org.buktify.cli.reader.input.impl.extended;
+package org.buktify.bibliothekcli.input;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
-import org.buktify.cli.reader.input.Validatable;
-import org.buktify.cli.reader.input.impl.StringType;
 import org.buktify.bibliothekcli.data.bootstrap.DataBootstrap;
 import org.buktify.bibliothekcli.data.image.FileImage;
 import org.buktify.bibliothekcli.data.image.impl.DownloadableFileImage;
+import org.buktify.cli.reader.input.Validatable;
+import org.buktify.cli.reader.input.impl.StringType;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 

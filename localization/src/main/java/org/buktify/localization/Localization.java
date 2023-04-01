@@ -19,27 +19,21 @@ public class Localization {
     private JsonObject localizationJson;
 
     @SneakyThrows(IOException.class)
-    public void init(@NotNull ResourceLoader resourceLoader, @NotNull String locale) throws LocalizationException {
+    public boolean init(@NotNull ResourceLoader resourceLoader, @NotNull String locale) {
         Resource localizationSource;
         try {
             localizationSource = resourceLoader.getResource("classpath:locale/" + locale + ".json");
-        }
-        catch (Exception ignored){
-            throw new LocalizationException("Could not load locale from " + locale + ".json");
+        } catch (Exception e) {
+            return false;
         }
         File localizationFile = localizationSource.getFile();
-        // localizationJson = (JSONObject) JSONValue.parse(Files.readString(localizationFile.toPath()));
         localizationJson = JsonParser.parseString(Files.readString(localizationFile.toPath())).getAsJsonObject();
+        return true;
     }
 
     @Nullable
-    public String localized(@NotNull String key){
+    public String localized(@NotNull String key) {
         return localizationJson.get(key).getAsString();
     }
 
-    public class LocalizationException extends Exception{
-        public LocalizationException(String message) {
-            super(message);
-        }
-    }
 }

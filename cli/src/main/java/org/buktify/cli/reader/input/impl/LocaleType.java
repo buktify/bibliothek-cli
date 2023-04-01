@@ -1,13 +1,15 @@
-package org.buktify.cli.reader.input.impl.extended;
+package org.buktify.cli.reader.input.impl;
 
 import lombok.SneakyThrows;
 import org.buktify.cli.reader.input.Validatable;
-import org.buktify.cli.reader.input.impl.StringType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
+import java.util.List;
 
 public class LocaleType extends StringType implements Validatable {
+
+    private final List<String> supportedLocales = List.of("en", "ru");
 
     @Override
     @SneakyThrows
@@ -18,7 +20,7 @@ public class LocaleType extends StringType implements Validatable {
 
     @Override
     public boolean isValid(@NotNull String item) {
-        return item.equalsIgnoreCase("en") || item.equalsIgnoreCase("ru");
+        return supportedLocales.contains(item.toLowerCase());
     }
 
     @Override

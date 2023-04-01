@@ -1,19 +1,17 @@
 package org.buktify.bibliothekcli.data.bootstrap;
 
-import com.google.common.hash.Hashing;
-import com.google.common.io.ByteSource;
-import com.google.common.io.Files;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
-import org.buktify.bibliothekcli.cli.writer.TerminalWriter;
 import org.buktify.bibliothekcli.data.bootstrap.response.BuildsResponse;
 import org.buktify.bibliothekcli.data.bootstrap.response.ProjectVersionsResponse;
 import org.buktify.bibliothekcli.data.image.FileImage;
 import org.buktify.bibliothekcli.data.image.impl.DownloadableFileImage;
-import org.buktify.bibliothekcli.util.Localization;
+import org.buktify.cli.writer.TerminalWriter;
+import org.buktify.localization.Localization;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -27,6 +25,9 @@ import org.springframework.web.client.RestTemplate;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.file.Files;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -89,12 +90,18 @@ public class FileImageDataBootstrap implements DataBootstrap, ApplicationContext
          * Comparing checksum
          */
         String expectedChecksum = downloadableFile.getLastestBuild().getDownloads().getApplication().getSha256();
-        ByteSource byteSource = Files.asByteSource(file);
-        String checksum = byteSource.hash(Hashing.sha256()).toString();
+        String checksum = generateSHA256Checksum(file);
         if (!checksum.equals(expectedChecksum)) {
             file.delete();
             throw new FileDownloadingException("Error downloading " + downloadableFile.getLastestBuild().getDownloads().getApplication().getName() + ". Got " + checksum + "SHA256 but expected " + expectedChecksum);
         }
+    }
+
+    @SneakyThrows
+    private String generateSHA256Checksum(@NotNull File file) {
+        byte[] data = Files.readAllBytes(file.toPath());
+        byte[] hash = MessageDigest.getInstance("SHA-256").digest(data);
+        return new BigInteger(1, hash).toString(16);
     }
 
     @Override
@@ -113,7 +120,7 @@ public class FileImageDataBootstrap implements DataBootstrap, ApplicationContext
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(@NotNull ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = (ConfigurableApplicationContext) applicationContext;
     }
 
