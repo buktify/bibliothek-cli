@@ -15,5 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = 'bibliothek-cli'
 
-['cli', 'bootstrap', 'localization'].forEach { include(it) }
+['cli', 'bootstrap'].forEach { include(it) }
 

@@ -10,7 +10,7 @@ import org.buktify.bibliothekcli.data.bootstrap.response.ProjectVersionsResponse
 import org.buktify.bibliothekcli.data.image.FileImage;
 import org.buktify.bibliothekcli.data.image.impl.DownloadableFileImage;
 import org.buktify.cli.writer.TerminalWriter;
-import org.buktify.localization.Localization;
+import org.buktify.cli.localization.Localization;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;

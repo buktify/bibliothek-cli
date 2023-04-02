@@ -9,7 +9,7 @@ import org.buktify.bibliothekcli.data.bootstrap.DataBootstrap;
 import org.buktify.cli.reader.TerminalReader;
 import org.buktify.cli.reader.input.InputType;
 import org.buktify.cli.writer.TerminalWriter;
-import org.buktify.localization.Localization;
+import org.buktify.cli.localization.Localization;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;

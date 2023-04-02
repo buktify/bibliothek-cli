@@ -3,7 +3,7 @@ package org.buktify.cli.writer;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.buktify.localization.Localization;
+import org.buktify.cli.localization.Localization;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

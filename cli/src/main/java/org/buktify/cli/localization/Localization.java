@@ -1,4 +1,4 @@
-package org.buktify.localization;
+package org.buktify.cli.localization;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

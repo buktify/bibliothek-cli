@@ -4,11 +4,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
+import org.buktify.cli.localization.Localization;
 import org.buktify.cli.reader.input.InputType;
 import org.buktify.cli.reader.input.Type;
 import org.buktify.cli.reader.input.Validatable;
 import org.buktify.cli.writer.TerminalWriter;
-import org.buktify.localization.Localization;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
