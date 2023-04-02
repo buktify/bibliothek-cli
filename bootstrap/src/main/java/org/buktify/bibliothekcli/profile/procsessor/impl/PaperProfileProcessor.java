@@ -13,7 +13,6 @@ import org.buktify.bibliothekcli.util.FileReplacer;
 import org.buktify.bibliothekcli.util.FileUtility;
 import org.buktify.cli.writer.TerminalWriter;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -26,7 +25,6 @@ import java.nio.file.Paths;
 public class PaperProfileProcessor implements ProfileProcessor<PaperProfile> {
 
     TerminalWriter writer;
-    ResourceLoader resourceLoader;
     DataBootstrap dataBootstrap;
 
     @Override
@@ -48,13 +46,13 @@ public class PaperProfileProcessor implements ProfileProcessor<PaperProfile> {
         }
         writer.writeln("Создаём и подписываем eula.txt");
         File eulaFile = Paths.get(serverDirectory + "/eula.txt").toFile();
-        if (!FileUtility.saveResourceToFile(resourceLoader, "paper/eula.txt", eulaFile)) {
+        if (!FileUtility.saveResourceToFile("paper/eula.txt", eulaFile)) {
             writer.writeln("Ошибка при создании eula.txt");
             return false;
         }
         writer.writeln("Создаём server.properties");
         File serverPropertiesFile = Paths.get(serverDirectory + "/server.properties").toFile();
-        if (!FileUtility.saveResourceToFile(resourceLoader, "paper/server.properties", serverPropertiesFile)) {
+        if (!FileUtility.saveResourceToFile("paper/server.properties", serverPropertiesFile)) {
             writer.writeln("Ошибка при создании server.properties");
             return false;
         }
@@ -65,7 +63,7 @@ public class PaperProfileProcessor implements ProfileProcessor<PaperProfile> {
         }
         writer.writeln("Создаём start.sh");
         File starterFile = Paths.get(serverDirectory + "/start.sh").toFile();
-        if (!FileUtility.saveResourceToFile(resourceLoader, "start.sh", starterFile)) {
+        if (!FileUtility.saveResourceToFile("start.sh", starterFile)) {
             writer.writeln("Ошибка при создании start.sh");
             return false;
         }

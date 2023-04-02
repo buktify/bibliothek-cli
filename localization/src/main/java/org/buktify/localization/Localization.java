@@ -2,33 +2,29 @@ package org.buktify.localization;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import java.nio.charset.Charset;
 
 @UtilityClass
 public class Localization {
 
     private JsonObject localizationJson;
 
-    @SneakyThrows(IOException.class)
-    public boolean init(@NotNull ResourceLoader resourceLoader, @NotNull String locale) {
-        Resource localizationSource;
+    public boolean init(@NotNull String locale) {
         try {
-            localizationSource = resourceLoader.getResource("classpath:locale/" + locale + ".json");
-        } catch (Exception e) {
+            Resource resource = new ClassPathResource("locale/" + locale + ".json");
+            String content = IOUtils.toString(resource.getInputStream(), Charset.defaultCharset());
+            localizationJson = JsonParser.parseString(content).getAsJsonObject();
+            return true;
+        } catch (Exception ignored) {
             return false;
         }
-        File localizationFile = localizationSource.getFile();
-        localizationJson = JsonParser.parseString(Files.readString(localizationFile.toPath())).getAsJsonObject();
-        return true;
     }
 
     @Nullable

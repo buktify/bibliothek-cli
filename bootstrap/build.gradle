@@ -1,9 +1,15 @@
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework:spring-web'
-
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     implementation project(":localization")
     implementation project(":cli")
+}
+
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "org.buktify.bibliothekcli.BibliothekCliApplication"
+    }
 }

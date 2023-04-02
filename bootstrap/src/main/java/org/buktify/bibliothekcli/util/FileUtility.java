@@ -2,7 +2,7 @@ package org.buktify.bibliothekcli.util;
 
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,8 +12,8 @@ import java.io.OutputStream;
 @UtilityClass
 public class FileUtility {
 
-    public boolean saveResourceToFile(@NotNull ResourceLoader resourceLoader, @NotNull String resourcePath, @NotNull File outputFile) {
-        try (InputStream inputStream = resourceLoader.getResource("classpath:" + resourcePath).getInputStream();
+    public boolean saveResourceToFile(@NotNull String resourcePath, @NotNull File outputFile) {
+        try (InputStream inputStream = new ClassPathResource(resourcePath).getInputStream();
              OutputStream outputStream = new FileOutputStream(outputFile)) {
             byte[] buffer = new byte[1024];
             int length;

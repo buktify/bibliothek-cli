@@ -17,7 +17,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -31,7 +30,6 @@ public class CommandBootstrap implements CommandLineRunner, ApplicationContextAw
     TerminalWriter writer;
     CommandProcessor commandProcessor;
     DataBootstrap dataBootstrap;
-    ResourceLoader resourceLoader;
     @NonFinal
     ConfigurableApplicationContext applicationContext;
     @NonFinal
@@ -41,7 +39,7 @@ public class CommandBootstrap implements CommandLineRunner, ApplicationContextAw
     @Override
     public void run(String... args) {
         renderHeader();
-        if (!Localization.init(resourceLoader, reader.forceRead("Select locale", InputType.LOCALE))) {
+        if (!Localization.init(reader.forceRead("Select locale", InputType.LOCALE))) {
             writer.writeln("Error during initializing localization");
             applicationContext.close();
             return;

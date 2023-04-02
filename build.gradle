@@ -11,12 +11,6 @@ allprojects {
     sourceCompatibility = '17'
 }
 
-tasks.jar {
-    manifest {
-        attributes["Main-Class"] = "org.buktify.bibliothekcli.BibliothekCliApplication"
-    }
-}
-
 subprojects {
     apply plugin: 'java'
     apply plugin: 'io.spring.dependency-management'
@@ -33,9 +27,6 @@ subprojects {
 dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
-    implementation 'com.google.guava:guava:31.1-jre'
-    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework:spring-web:6.0.7'
