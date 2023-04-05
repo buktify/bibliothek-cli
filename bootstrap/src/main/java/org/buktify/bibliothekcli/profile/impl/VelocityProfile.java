@@ -18,6 +18,8 @@ public class VelocityProfile implements InitializationProfile {
     String version;
     String serverName;
     @Builder.Default
+    boolean onlineMode = true;
+    @Builder.Default
     int serverPort = 25565;
     @Builder.Default
     OptimizationShellFlags optimizationShellFlags = null;

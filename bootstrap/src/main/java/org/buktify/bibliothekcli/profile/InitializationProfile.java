@@ -12,6 +12,8 @@ public interface InitializationProfile {
 
     String getVersion();
 
+    boolean isOnlineMode();
+
     String getServerName();
 
     int getServerPort();
