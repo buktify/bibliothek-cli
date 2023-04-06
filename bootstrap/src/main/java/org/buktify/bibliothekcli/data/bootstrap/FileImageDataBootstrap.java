@@ -5,12 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
+import org.buktify.bibliothekcli.data.bootstrap.exception.FileDownloadingException;
 import org.buktify.bibliothekcli.data.bootstrap.response.BuildsResponse;
 import org.buktify.bibliothekcli.data.bootstrap.response.ProjectVersionsResponse;
 import org.buktify.bibliothekcli.data.image.FileImage;
 import org.buktify.bibliothekcli.data.image.impl.DownloadableFileImage;
-import org.buktify.cli.writer.TerminalWriter;
 import org.buktify.cli.localization.Localization;
+import org.buktify.cli.writer.TerminalWriter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,8 +71,8 @@ public class FileImageDataBootstrap implements DataBootstrap, ApplicationContext
 
     @Override
     @SneakyThrows(IOException.class)
-    @SuppressWarnings("all")
-    public void download(DownloadableFileImage downloadableFile, File file) throws FileDownloadingException {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public void download(@NotNull DownloadableFileImage downloadableFile, @NotNull File file) throws FileDownloadingException {
         /*
          * Creating parent directories and file if not exists
          */
@@ -105,18 +106,25 @@ public class FileImageDataBootstrap implements DataBootstrap, ApplicationContext
     }
 
     @Override
-    public void bootstrap(DownloadableFileImage dataHolder) {
+    public void bootstrap(@NotNull DownloadableFileImage dataHolder) {
         bootstrappedImages.add(dataHolder);
     }
 
     @Override
-    public List<DownloadableFileImage> getByType(FileImage.ImageType imageType) {
+    public List<DownloadableFileImage> getByType(FileImage.@NotNull ImageType imageType) {
         return bootstrappedImages.stream().filter(image -> image.getImageType().equals(imageType)).collect(Collectors.toList());
     }
 
     @Override
-    public Optional<DownloadableFileImage> getByTypeAndVersion(FileImage.ImageType imageType, String version) {
+    public Optional<DownloadableFileImage> getByTypeAndVersion(FileImage.@NotNull ImageType imageType, @NotNull String version) {
         return bootstrappedImages.stream().filter(image -> image.getImageType().equals(imageType)).filter(image -> image.getVersion().equals(version)).findFirst();
+    }
+
+    @Override
+    public Optional<DownloadableFileImage> getLastestBuild(FileImage.@NotNull ImageType imageType) {
+        List<DownloadableFileImage> versionData = getByType(FileImage.ImageType.PAPER);
+        if (versionData.isEmpty()) return Optional.empty();
+        return Optional.of(versionData.get(versionData.size() - 1));
     }
 
     @Override
@@ -124,9 +132,5 @@ public class FileImageDataBootstrap implements DataBootstrap, ApplicationContext
         this.applicationContext = (ConfigurableApplicationContext) applicationContext;
     }
 
-    public static class FileDownloadingException extends Exception {
-        public FileDownloadingException(String message) {
-            super(message);
-        }
-    }
+
 }

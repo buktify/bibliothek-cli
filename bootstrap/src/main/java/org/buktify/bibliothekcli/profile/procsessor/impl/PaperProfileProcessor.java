@@ -1,15 +1,13 @@
 package org.buktify.bibliothekcli.profile.procsessor.impl;
 
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.buktify.bibliothekcli.data.bootstrap.DataBootstrap;
-import org.buktify.bibliothekcli.data.bootstrap.FileImageDataBootstrap;
 import org.buktify.bibliothekcli.data.image.impl.DownloadableFileImage;
 import org.buktify.bibliothekcli.profile.impl.PaperProfile;
+import org.buktify.bibliothekcli.profile.procsessor.AbstractProfileProcessor;
 import org.buktify.bibliothekcli.profile.procsessor.ProfileProcessor;
 import org.buktify.bibliothekcli.util.FileReplacer;
 import org.buktify.bibliothekcli.util.FileUtility;
@@ -19,46 +17,33 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 @Component
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-@RequiredArgsConstructor
-public class PaperProfileProcessor implements ProfileProcessor<PaperProfile> {
+public class PaperProfileProcessor extends AbstractProfileProcessor implements ProfileProcessor<PaperProfile> {
 
-    TerminalWriter writer;
-    DataBootstrap dataBootstrap;
+    public PaperProfileProcessor(TerminalWriter writer, DataBootstrap dataBootstrap) {
+        super(writer, dataBootstrap);
+    }
 
     @Override
     @SneakyThrows
     public boolean process(@NotNull PaperProfile profile) {
+        DownloadableFileImage fileImage = dataBootstrap.getByTypeAndVersion(profile.getImageType(), profile.getVersion()).orElse(null);
+        assert fileImage != null;
         String serverDirectory = profile.getServerName() + "/";
-        File serverDirectoryFile = Paths.get(serverDirectory).toFile();
-        writer.writeln("Создаём директорию");
-        Files.createDirectories(serverDirectoryFile.toPath());
-        writer.writeln("Скачиваем ядро сервера");
-        DownloadableFileImage fileImage = dataBootstrap.getByTypeAndVersion(profile.getImageType(), profile.getVersion()).get();
-        try {
-            File serverJarFile = Paths.get(serverDirectory + fileImage.getCanonicalFileName()).toFile();
-            serverJarFile.createNewFile();
-            dataBootstrap.download(fileImage, serverJarFile);
-        } catch (FileImageDataBootstrap.FileDownloadingException exception) {
-            writer.writeln(exception.getMessage());
-            return false;
-        }
-        writer.writeln("Создаём и подписываем eula.txt");
+        if (!performBaseFileActions(serverDirectory, fileImage)) return false;
+        writer.localizedWriteln("processor-paper-creating-eula");
         File eulaFile = Paths.get(serverDirectory + "/eula.txt").toFile();
         if (!FileUtility.saveResourceToFile("paper/eula.txt", eulaFile)) {
-            writer.writeln("Ошибка при создании eula.txt");
+            writer.localizedWriteln("processor-paper-creating-eula");
             return false;
         }
-        writer.writeln("Создаём server.properties");
+        writer.localizedWriteln("processor-paper-creating-properties");
         File serverPropertiesFile = Paths.get(serverDirectory + "/server.properties").toFile();
         if (!FileUtility.saveResourceToFile("paper/server.properties", serverPropertiesFile)) {
-            writer.writeln("Ошибка при создании server.properties");
+            writer.localizedWriteln("processor-paper-creating-properties-error");
             return false;
         }
         if (profile.getServerPort() != 25565) {
@@ -67,29 +52,33 @@ public class PaperProfileProcessor implements ProfileProcessor<PaperProfile> {
                     .replace("%online-mode%", String.valueOf(profile.isOnlineMode()))
                     .apply();
         }
-        writer.writeln("Создаём start.sh");
+        writer.localizedWriteln("processor-paper-creating-shell-script");
         File starterFile = Paths.get(serverDirectory + "/start.sh").toFile();
         if (!FileUtility.saveResourceToFile("start.sh", starterFile)) {
-            writer.writeln("Ошибка при создании start.sh");
+            writer.localizedWriteln("processor-paper-creating-shell-script-error");
             return false;
         }
-        FileReplacer.open(starterFile).replace("%sever-jar%", fileImage.getCanonicalFileName()).replace("%ignore-java-version-flag%", profile.getVersion().contains("1.16") ? "-DPaper.IgnoreJavaVersion=true" : "").replace("%optimization-flags%", profile.getOptimizationShellFlags() != null ? profile.getOptimizationShellFlags().getFlags() : "").apply();
+        FileReplacer.open(starterFile)
+                .replace("%sever-jar%", fileImage.getCanonicalFileName())
+                .replace("%ignore-java-version-flag%", profile.getVersion().contains("1.16") ? "-DPaper.IgnoreJavaVersion=true" : "")
+                .replace("%optimization-flags%", profile.getOptimizationShellFlags() != null ? profile.getOptimizationShellFlags().getFlags() : "")
+                .apply();
         if (profile.getProxyConnectionProfile() != null) {
-            writer.writeln("Подключаем сервер к Velocity");
+            writer.localizedWriteln("processor-paper-connecting-to-proxy");
             File velocityFolder = Paths.get(profile.getProxyConnectionProfile().getProxyFolder()).toFile();
             if (!velocityFolder.exists() || velocityFolder.isFile()) {
-                writer.writeln("Ошибка при подключении к Velocity: папка прокси не найлена");
+                writer.localizedWriteln("processor-paper-connecting-to-proxy-folder-error");
                 return false;
             }
             File velocityToml = Paths.get(velocityFolder + "/velocity.toml").toFile();
             if (!velocityFolder.exists() || !velocityToml.isFile()) {
-                writer.writeln("Ошибка при подключении к Velocity: velocity.toml не найден");
+                writer.localizedWriteln("processor-paper-connecting-to-proxy-toml-error");
                 return false;
             }
             addServer(profile.getServerName() + " = \"127.0.0.1:" + profile.getServerPort() + "\"", velocityToml);
             File velocitySecret = Paths.get(velocityFolder + "/forwarding.secret").toFile();
             if (!velocitySecret.exists() || !velocitySecret.isFile()) {
-                writer.writeln("Ошибка при подключении к Velocity: forwarding.secret не найден");
+                writer.writeln("processor-paper-connecting-to-proxy-secret-error");
                 return false;
             }
             String secret = IOUtils.toString(velocitySecret.toURI(), Charset.defaultCharset());
@@ -103,20 +92,4 @@ public class PaperProfileProcessor implements ProfileProcessor<PaperProfile> {
         return true;
     }
 
-    @SneakyThrows
-    private void addServer(@NotNull String serverData, @NotNull File velocityConfigFile) {
-        ArrayList<String> lines = new ArrayList<>(Arrays.stream(FileUtils.readFileToString(velocityConfigFile, "UTF-8").split("\\r?\\n")).toList());
-        boolean serverSection = false;
-        for (int i = 0; i < lines.size() - 1; i++) {
-            String line = lines.get(i);
-            if (line.equals("[servers]")) serverSection = true;
-            if (serverSection) {
-                if (line.isEmpty()) {
-                    lines.add(i, serverData);
-                    break;
-                }
-            }
-        }
-        FileUtils.writeLines(velocityConfigFile, "UTF-8", lines, "\n");
-    }
 }

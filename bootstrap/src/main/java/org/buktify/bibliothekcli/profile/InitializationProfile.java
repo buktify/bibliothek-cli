@@ -10,8 +10,6 @@ public interface InitializationProfile {
 
     FileImage.ImageType getImageType();
 
-    String getVersion();
-
     boolean isOnlineMode();
 
     String getServerName();

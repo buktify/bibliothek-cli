@@ -15,7 +15,6 @@ import org.buktify.bibliothekcli.profile.InitializationProfile;
 public class VelocityProfile implements InitializationProfile {
 
     FileImage.ImageType imageType = FileImage.ImageType.VELOCITY;
-    String version;
     String serverName;
     @Builder.Default
     boolean onlineMode = true;

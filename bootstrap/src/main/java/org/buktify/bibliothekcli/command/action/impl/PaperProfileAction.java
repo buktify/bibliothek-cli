@@ -1,8 +1,8 @@
 package org.buktify.bibliothekcli.command.action.impl;
 
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.buktify.bibliothekcli.command.action.AbstractProfileAction;
 import org.buktify.bibliothekcli.command.action.CommandAction;
 import org.buktify.bibliothekcli.data.bootstrap.DataBootstrap;
 import org.buktify.bibliothekcli.input.PaperVersionType;
@@ -16,18 +16,21 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.Objects;
 
 @Component("initPaperAction")
-@RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class PaperProfileAction implements CommandAction {
+public class PaperProfileAction extends AbstractProfileAction implements CommandAction {
 
     PaperProfile.PaperProfileBuilder builder = PaperProfile.builder();
-    TerminalReader reader;
-    TerminalWriter writer;
     DataBootstrap dataBootstrap;
     PaperProfileProcessor profileProcessor;
+
+    public PaperProfileAction(TerminalReader reader, TerminalWriter writer, DataBootstrap dataBootstrap, PaperProfileProcessor profileProcessor) {
+        super(reader, writer);
+        this.dataBootstrap = dataBootstrap;
+        this.profileProcessor = profileProcessor;
+    }
+
 
     @Override
     public void execute() {
@@ -35,24 +38,13 @@ public class PaperProfileAction implements CommandAction {
         builder.version(version);
         writer.localizedWriteln("paper-select-name");
         writer.localizedWriteln("paper-select-name-description");
-        String serverName = reader.read(InputType.STRING);
-        assert serverName != null;
+        String serverName = reader.forceRead(InputType.STRING);
         File serverDirectory = Paths.get(serverName).toFile();
-        if (serverDirectory.exists()) {
-            if (serverDirectory.listFiles() != null && Objects.requireNonNull(serverDirectory.listFiles()).length != 0) {
-                String option = reader.localizedForceRead("directory-already-exists-with-files", InputType.OPTIONAL);
-                if (option.equals("n")) return;
-            }
-            if (serverDirectory.isFile()) {
-                writer.localizedWriteln("directory-is-a-file");
-                return;
-            }
-            String option = reader.localizedForceRead("directory-already-exists", InputType.OPTIONAL);
-            if (option.equals("n")) return;
-        }
+        if (!validateServerDirectory(serverDirectory)) return;
         builder.serverName(serverName);
-        reader.processLocalizedOptionalChoice("paper-select-port-opt", () -> {
-            Integer port = reader.localizedForceRead("paper-select-port", InputType.PORT);
+        builder.onlineMode(reader.localizedForceRead("server-select-online-mode", InputType.OPTIONAL).equals("y"));
+        reader.processLocalizedOptionalChoice("server-select-port-opt", () -> {
+            Integer port = reader.localizedForceRead("server-select-port", InputType.PORT);
             builder.serverPort(port);
         });
         reader.processLocalizedOptionalChoice("paper-select-connect-to-velocity-opt", () -> {
