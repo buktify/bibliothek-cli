@@ -36,8 +36,8 @@ public class PaperProfileAction extends AbstractProfileAction implements Command
     public void execute() {
         String version = reader.localizedForceRead("paper-select-version", new PaperVersionType(dataBootstrap));
         builder.version(version);
-        writer.localizedWriteln("paper-select-name");
-        writer.localizedWriteln("paper-select-name-description");
+        writer.localizedWriteln("server-select-name");
+        writer.localizedWriteln("server-select-name-description");
         String serverName = reader.forceRead(InputType.STRING);
         File serverDirectory = Paths.get(serverName).toFile();
         if (!validateServerDirectory(serverDirectory)) return;

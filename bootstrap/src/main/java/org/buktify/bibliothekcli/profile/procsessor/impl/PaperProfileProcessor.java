@@ -52,10 +52,10 @@ public class PaperProfileProcessor extends AbstractProfileProcessor implements P
                     .replace("%online-mode%", String.valueOf(profile.isOnlineMode()))
                     .apply();
         }
-        writer.localizedWriteln("processor-paper-creating-shell-script");
+        writer.localizedWriteln("processor-creating-shell-script");
         File starterFile = Paths.get(serverDirectory + "/start.sh").toFile();
         if (!FileUtility.saveResourceToFile("start.sh", starterFile)) {
-            writer.localizedWriteln("processor-paper-creating-shell-script-error");
+            writer.localizedWriteln("processor-creating-shell-script-error");
             return false;
         }
         FileReplacer.open(starterFile)

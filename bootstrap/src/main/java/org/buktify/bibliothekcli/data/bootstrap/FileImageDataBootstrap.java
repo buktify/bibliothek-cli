@@ -122,7 +122,7 @@ public class FileImageDataBootstrap implements DataBootstrap, ApplicationContext
 
     @Override
     public Optional<DownloadableFileImage> getLastestBuild(FileImage.@NotNull ImageType imageType) {
-        List<DownloadableFileImage> versionData = getByType(FileImage.ImageType.PAPER);
+        List<DownloadableFileImage> versionData = getByType(imageType);
         if (versionData.isEmpty()) return Optional.empty();
         return Optional.of(versionData.get(versionData.size() - 1));
     }
