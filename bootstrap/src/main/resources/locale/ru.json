@@ -7,6 +7,10 @@
   "init-start": "Хорошо, давайте начнем с настройки профиля.",
   "init-select-product": "Выберите, что вы хотите установить",
   "paper-select-version": "Укажите версию которую, хотите установить",
+  "velocity-verify-profile": "Здесь настроен профиль. Имя сервера: %server-name%, онлайн-режим: %online-mode%, порт: %server-port%, флаги оптимизации: %optimization-flags%",
+  "paper-verify-profile": "Здесь настроен профиль. Версия: %version%, имя сервера: %server-name%, онлайн-режим: %online-mode%, порт: %server-port%,\nфлаги оптимизации: %optimization-flags%, прокси-соединение: %proxy-connection%",
+  "processor-continue-opt": "Продолжить инициализацию?",
+  "processor-starting": "Запуск обработки профиля...",
   "server-select-name": "Введите название вашего сервера",
   "server-select-name-description": "Название сервера будет совпадать с названием директории, в которой сервер будет создан.",
   "server-select-online-mode": "Укажите, включать ли online-mode",
@@ -32,5 +36,6 @@
   "processor-paper-connecting-to-proxy-secret-error": "Ошибка при подключении к Velocity: forwarding.secret не найден",
   "processor-velocity-creating-toml": "Создаём velocity.toml",
   "processor-velocity-creating-toml-error": "Ошибка при создании velocity.toml",
-  "velocity-select-flags-opt": "Желаете ли использовать флаги оптимизации"
+  "velocity-select-flags-opt": "Желаете ли использовать флаги оптимизации",
+  "processor-success": "Ваш профиль успешно обработан. Спасибо, что выбираете нас нас!"
 }

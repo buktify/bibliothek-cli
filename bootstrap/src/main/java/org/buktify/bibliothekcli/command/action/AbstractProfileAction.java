@@ -3,6 +3,10 @@ package org.buktify.bibliothekcli.command.action;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.buktify.bibliothekcli.profile.InitializationProfile;
+import org.buktify.bibliothekcli.profile.impl.PaperProfile;
+import org.buktify.bibliothekcli.profile.impl.VelocityProfile;
+import org.buktify.cli.localization.Localization;
 import org.buktify.cli.reader.TerminalReader;
 import org.buktify.cli.reader.input.InputType;
 import org.buktify.cli.writer.TerminalWriter;
@@ -36,16 +40,36 @@ public abstract class AbstractProfileAction {
         if (serverDirectory.exists()) {
             if (serverDirectory.listFiles() != null && Objects.requireNonNull(serverDirectory.listFiles()).length != 0) {
                 String option = reader.localizedForceRead("directory-already-exists-with-files", InputType.OPTIONAL);
-                if (option.equals("n")) return false;
+                return option.equalsIgnoreCase("y");
             }
             if (serverDirectory.isFile()) {
                 writer.localizedWriteln("directory-is-a-file");
                 return false;
             }
             String option = reader.localizedForceRead("directory-already-exists", InputType.OPTIONAL);
-            return !option.equals("n");
+            return option.equalsIgnoreCase("y");
         }
         return true;
+    }
+
+    protected boolean validateProfile(@NotNull InitializationProfile profile) {
+        if (profile instanceof VelocityProfile velocityProfile) {
+            writer.writeln(Objects.requireNonNull(Localization.localized("velocity-verify-profile"))
+                    .replaceAll("%server-name%", velocityProfile.getServerName())
+                    .replaceAll("%optimization-flags%", velocityProfile.getOptimizationShellFlags() != null ? "applied" : "none")
+                    .replaceAll("%server-port%", String.valueOf(velocityProfile.getServerPort()))
+                    .replaceAll("%online-mode%", String.valueOf(velocityProfile.isOnlineMode())));
+        }
+        if (profile instanceof PaperProfile paperProfile) {
+            writer.writeln(Objects.requireNonNull(Localization.localized("paper-verify-profile"))
+                    .replaceAll("%server-name%", paperProfile.getServerName())
+                    .replaceAll("%version%", paperProfile.getVersion())
+                    .replaceAll("%proxy-connection%", paperProfile.getProxyConnectionProfile() != null ? paperProfile.getProxyConnectionProfile().getProxyFolder() : "none")
+                    .replaceAll("%optimization-flags%", paperProfile.getOptimizationShellFlags() != null ? "applied" : "none")
+                    .replaceAll("%server-port%", String.valueOf(paperProfile.getServerPort()))
+                    .replaceAll("%online-mode%", String.valueOf(paperProfile.isOnlineMode())));
+        }
+        return reader.localizedForceRead("processor-continue-opt", InputType.OPTIONAL).equalsIgnoreCase("y");
     }
 
 }

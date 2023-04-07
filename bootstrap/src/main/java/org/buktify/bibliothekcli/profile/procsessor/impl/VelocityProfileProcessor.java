@@ -67,6 +67,7 @@ public class VelocityProfileProcessor extends AbstractProfileProcessor implement
                 .replace("%ignore-java-version-flag%", "")
                 .replace("%optimization-flags%", profile.getOptimizationShellFlags() != null ? profile.getOptimizationShellFlags().getFlags() : "")
                 .apply();
+        writer.localizedWriteln("processor-success");
         return true;
     }
 }

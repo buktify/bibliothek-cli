@@ -26,11 +26,11 @@ public class VelocityProfileAction extends AbstractProfileAction implements Comm
     VelocityProfileProcessor profileProcessor;
 
     /**
-     * Constructs a new instance of the PaperProfileAction.
+     * Constructs a new instance of the VelocityProfileAction.
      *
-     * @param reader           the TerminalReader to use for reading user input
-     * @param writer           the TerminalWriter to use for writing output to the terminal
-     * @param profileProcessor the VelocityProfileProcessor to use for processing given profile
+     * @param reader           the {@link TerminalReader} to use for reading user input
+     * @param writer           the {@link TerminalWriter} to use for writing output to the terminal
+     * @param profileProcessor the {@link VelocityProfileProcessor} to use for processing given profile
      */
     public VelocityProfileAction(TerminalReader reader, TerminalWriter writer, VelocityProfileProcessor profileProcessor) {
         super(reader, writer);
@@ -54,6 +54,9 @@ public class VelocityProfileAction extends AbstractProfileAction implements Comm
             builder.serverPort(port);
         });
         reader.processLocalizedOptionalChoice("velocity-select-flags-opt", () -> builder.optimizationShellFlags(InitializationProfile.OptimizationShellFlags.PROXY));
-        profileProcessor.process(builder.build());
+        VelocityProfile paperProfile = builder.build();
+        if (!validateProfile(paperProfile)) return;
+        writer.localizedWriteln("processor-starting");
+        profileProcessor.process(paperProfile);
     }
 }

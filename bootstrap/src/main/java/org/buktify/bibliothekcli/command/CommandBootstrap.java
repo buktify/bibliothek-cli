@@ -57,7 +57,7 @@ public class CommandBootstrap implements CommandLineRunner, ApplicationContextAw
             String[] arguments = line.split(" ");
             commandProcessor.process(arguments[0]);
         }
-        writer.localizedWrite("shutting-down");
+        writer.localizedWriteln("shutting-down");
         applicationContext.close();
     }
 

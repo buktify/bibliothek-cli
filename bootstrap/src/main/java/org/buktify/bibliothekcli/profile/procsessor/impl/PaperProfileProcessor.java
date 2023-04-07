@@ -104,6 +104,7 @@ public class PaperProfileProcessor extends AbstractProfileProcessor implements P
                     .replace("%forwarding_secret%", secret)
                     .apply();
         }
+        writer.localizedWriteln("processor-success");
         return true;
     }
 

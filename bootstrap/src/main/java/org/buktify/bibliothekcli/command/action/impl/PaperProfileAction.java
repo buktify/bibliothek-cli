@@ -9,6 +9,7 @@ import org.buktify.bibliothekcli.input.PaperVersionType;
 import org.buktify.bibliothekcli.profile.InitializationProfile;
 import org.buktify.bibliothekcli.profile.impl.PaperProfile;
 import org.buktify.bibliothekcli.profile.procsessor.impl.PaperProfileProcessor;
+import org.buktify.bibliothekcli.profile.procsessor.impl.VelocityProfileProcessor;
 import org.buktify.cli.reader.TerminalReader;
 import org.buktify.cli.reader.input.InputType;
 import org.buktify.cli.writer.TerminalWriter;
@@ -31,10 +32,10 @@ public class PaperProfileAction extends AbstractProfileAction implements Command
     /**
      * Constructs a new instance of the PaperProfileAction.
      *
-     * @param reader           the TerminalReader to use for reading user input
-     * @param writer           the TerminalWriter to use for writing output to the terminal
-     * @param dataBootstrap    the DataBootstrap to use for bootstrapping data
-     * @param profileProcessor the PaperProfileProcessor to use for processing given profile
+     * @param reader           the {@link TerminalReader} to use for reading user input
+     * @param writer           the {@link TerminalWriter} to use for writing output to the terminal
+     * @param dataBootstrap    the {@link DataBootstrap} to use for bootstrapping data
+     * @param profileProcessor the {@link VelocityProfileProcessor} to use for processing given profile
      */
     public PaperProfileAction(TerminalReader reader, TerminalWriter writer, DataBootstrap dataBootstrap, PaperProfileProcessor profileProcessor) {
         super(reader, writer);
@@ -65,6 +66,9 @@ public class PaperProfileAction extends AbstractProfileAction implements Command
             builder.proxyConnectionProfile(new PaperProfile.ProxyConnectionProfile(proxyFolder));
         });
         reader.processLocalizedOptionalChoice("paper-select-flags-opt", () -> builder.optimizationShellFlags(InitializationProfile.OptimizationShellFlags.AIKAR));
-        profileProcessor.process(builder.build());
+        PaperProfile paperProfile = builder.build();
+        if (!validateProfile(paperProfile)) return;
+        writer.localizedWriteln("processor-starting");
+        profileProcessor.process(paperProfile);
     }
 }
