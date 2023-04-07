@@ -6,18 +6,50 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.buktify.bibliothekcli.data.image.FileImage;
 
+/**
+ * An interface representing a profile for initializing a server
+ */
 public interface InitializationProfile {
 
+    /**
+     * Gets the type of image associated with this initialization profile.
+     *
+     * @return The type of image.
+     */
     FileImage.ImageType getImageType();
 
+    /**
+     * Determines whether online mode is should be enabled on server.
+     *
+     * @return true if online mode should be enabled on server.
+     */
     boolean isOnlineMode();
 
+    /**
+     * Gets the name of the server associated with this initialization profile.
+     *
+     * @return The server name.
+     */
     String getServerName();
 
+    /**
+     * Gets the port number associated with the server.
+     *
+     * @return The server port number.
+     */
     int getServerPort();
 
+    /**
+     * Gets the optimization shell flags associated with the initialization profile.
+     *
+     * @return The optimization shell flags.
+     */
     OptimizationShellFlags getOptimizationShellFlags();
 
+    /**
+     * An enumeration representing the optimization shell flags
+     * that can be associated with an initialization profile.
+     */
     @RequiredArgsConstructor
     @Getter
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)

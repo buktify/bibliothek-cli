@@ -17,6 +17,9 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.nio.file.Paths;
 
+/**
+ * This class represents an action for initializing a Paper server profile.
+ */
 @Component("initPaperAction")
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class PaperProfileAction extends AbstractProfileAction implements CommandAction {
@@ -25,13 +28,23 @@ public class PaperProfileAction extends AbstractProfileAction implements Command
     DataBootstrap dataBootstrap;
     PaperProfileProcessor profileProcessor;
 
+    /**
+     * Constructs a new instance of the PaperProfileAction.
+     *
+     * @param reader           the TerminalReader to use for reading user input
+     * @param writer           the TerminalWriter to use for writing output to the terminal
+     * @param dataBootstrap    the DataBootstrap to use for bootstrapping data
+     * @param profileProcessor the PaperProfileProcessor to use for processing given profile
+     */
     public PaperProfileAction(TerminalReader reader, TerminalWriter writer, DataBootstrap dataBootstrap, PaperProfileProcessor profileProcessor) {
         super(reader, writer);
         this.dataBootstrap = dataBootstrap;
         this.profileProcessor = profileProcessor;
     }
 
-
+    /**
+     * Executes the action for initializing a Paper server profile.
+     */
     @Override
     public void execute() {
         String version = reader.localizedForceRead("paper-select-version", new PaperVersionType(dataBootstrap));

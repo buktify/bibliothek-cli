@@ -21,6 +21,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+/**
+ * Main class, that handles command line input
+ * and gives line to {@link CommandProcessor} for continuous
+ * handling
+ */
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -56,6 +61,13 @@ public class CommandBootstrap implements CommandLineRunner, ApplicationContextAw
         applicationContext.close();
     }
 
+    /**
+     * Sets the application context to use this class.
+     * Mainly used for correct application shutdown.
+     *
+     * @param applicationContext the application context in which this class will be used
+     * @throws BeansException if an error occurs while getting the application context
+     */
     @Override
     public void setApplicationContext(@NotNull ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = (ConfigurableApplicationContext) applicationContext;

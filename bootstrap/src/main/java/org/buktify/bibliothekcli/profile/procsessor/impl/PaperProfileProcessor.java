@@ -19,14 +19,29 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Paths;
 
+/**
+ * Component that processes a {@link PaperProfile} to create a paper server.
+ */
 @Component
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class PaperProfileProcessor extends AbstractProfileProcessor implements ProfileProcessor<PaperProfile> {
 
+    /**
+     * Constructor for the PaperProfileProcessor.
+     *
+     * @param writer        The {@link TerminalWriter} used to write data to the console.
+     * @param dataBootstrap The {@link DataBootstrap} used to download server jar.
+     */
     public PaperProfileProcessor(TerminalWriter writer, DataBootstrap dataBootstrap) {
         super(writer, dataBootstrap);
     }
 
+    /**
+     * Processes a {@link PaperProfile} to create a paper server.
+     *
+     * @param profile The {@link PaperProfile} to be processed.
+     * @return true if the process is successful, false otherwise.
+     */
     @Override
     @SneakyThrows
     public boolean process(@NotNull PaperProfile profile) {

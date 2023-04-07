@@ -10,6 +10,9 @@ import org.buktify.cli.reader.TerminalReader;
 import org.buktify.cli.writer.TerminalWriter;
 import org.springframework.stereotype.Component;
 
+/**
+ * Represents a command action for initializing a new server profile.
+ */
 @Component("initAction")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -20,6 +23,11 @@ public class InitCommandAction implements CommandAction {
     PaperProfileAction paperProfileAction;
     VelocityProfileAction velocityProfileAction;
 
+    /**
+     * This method prompts the user to select a product type (defined in {@link ProductType}),
+     * and then delegates to the appropriate profile action for that product type
+     * to perform the initialization.
+     */
     @Override
     public void execute() {
         writer.localizedWriteln("init-start");

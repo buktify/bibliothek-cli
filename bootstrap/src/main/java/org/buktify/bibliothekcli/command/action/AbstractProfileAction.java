@@ -11,6 +11,13 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.Objects;
 
+/**
+ * An abstract base class for profile actions.
+ * <p>
+ * This class provides a protected method for validating the server directory.
+ * <p>
+ * This class is meant to be extended by concrete profile action classes, which can implement their own behavior.
+ */
 @FieldDefaults(makeFinal = true, level = AccessLevel.PROTECTED)
 @RequiredArgsConstructor
 public abstract class AbstractProfileAction {
@@ -18,6 +25,12 @@ public abstract class AbstractProfileAction {
     TerminalReader reader;
     TerminalWriter writer;
 
+    /**
+     * Validates whether a server directory can be used for this profile.
+     *
+     * @param serverDirectory the directory to validate
+     * @return true if the directory can be used, false otherwise
+     */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     protected boolean validateServerDirectory(@NotNull File serverDirectory) {
         if (serverDirectory.exists()) {

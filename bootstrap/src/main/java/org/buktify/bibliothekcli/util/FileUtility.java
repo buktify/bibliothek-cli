@@ -9,9 +9,20 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * This utility class provides a method to save a resource file to a specified output file.
+ * Only works with {@link ClassPathResource}
+ */
 @UtilityClass
 public class FileUtility {
 
+    /**
+     * Saves a resource file to a specified output file.
+     *
+     * @param resourcePath the path to the resource file to be saved
+     * @param outputFile   the file to which the resource file will be saved
+     * @return true if the resource file was successfully saved, false otherwise
+     */
     public boolean saveResourceToFile(@NotNull String resourcePath, @NotNull File outputFile) {
         try (InputStream inputStream = new ClassPathResource(resourcePath).getInputStream();
              OutputStream outputStream = new FileOutputStream(outputFile)) {

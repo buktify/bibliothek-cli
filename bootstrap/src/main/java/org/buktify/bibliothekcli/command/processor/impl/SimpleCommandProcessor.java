@@ -4,19 +4,30 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.buktify.bibliothekcli.command.action.CommandAction;
 import org.buktify.bibliothekcli.command.processor.CommandProcessor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+/**
+ * Simple realization of {@link CommandProcessor}, which uses application context
+ * for handling implemented command
+ */
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SimpleCommandProcessor implements CommandProcessor, ApplicationContextAware {
 
     ApplicationContext applicationContext;
 
+    /**
+     * Processes the specified command using the search application context
+     * and perform the appropriate action.
+     *
+     * @param command string representing the command to process
+     */
     @Override
-    public void process(String command) {
+    public void process(@NotNull String command) {
         Object bean;
         try {
             bean = applicationContext.getBean(command + "Action");
@@ -31,8 +42,15 @@ public class SimpleCommandProcessor implements CommandProcessor, ApplicationCont
         System.out.println("Invalid command, try \"help\"");
     }
 
+    /**
+     * Sets the application context to use this class.
+     * Used for searching for bean that implements given command acton.
+     *
+     * @param applicationContext the application context in which this class will be used
+     * @throws BeansException if an error occurs while getting the application context
+     */
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(@NotNull ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
 }

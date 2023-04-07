@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.nio.file.Paths;
 
+/**
+ * Represents an action to initialize a Velocity server profile.
+ */
 @Component("initVelocityAction")
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class VelocityProfileAction extends AbstractProfileAction implements CommandAction {
@@ -22,11 +25,21 @@ public class VelocityProfileAction extends AbstractProfileAction implements Comm
     VelocityProfile.VelocityProfileBuilder builder = VelocityProfile.builder();
     VelocityProfileProcessor profileProcessor;
 
+    /**
+     * Constructs a new instance of the PaperProfileAction.
+     *
+     * @param reader           the TerminalReader to use for reading user input
+     * @param writer           the TerminalWriter to use for writing output to the terminal
+     * @param profileProcessor the VelocityProfileProcessor to use for processing given profile
+     */
     public VelocityProfileAction(TerminalReader reader, TerminalWriter writer, VelocityProfileProcessor profileProcessor) {
         super(reader, writer);
         this.profileProcessor = profileProcessor;
     }
 
+    /**
+     * Executes the action for initializing a velocity server profile.
+     */
     @Override
     public void execute() {
         writer.localizedWriteln("server-select-name");

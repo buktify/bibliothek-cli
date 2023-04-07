@@ -16,15 +16,29 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.file.Paths;
-
+/**
+ * Component that processes a {@link VelocityProfile} to create a Velocity server.
+ */
 @Component
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class VelocityProfileProcessor extends AbstractProfileProcessor implements ProfileProcessor<VelocityProfile> {
 
+    /**
+     * Constructor for the VelocityProfileProcessor.
+     *
+     * @param writer        The {@link TerminalWriter} used to write data to the console.
+     * @param dataBootstrap The {@link DataBootstrap} used to download server jar.
+     */
     public VelocityProfileProcessor(TerminalWriter writer, DataBootstrap dataBootstrap) {
         super(writer, dataBootstrap);
     }
 
+    /**
+     * Processes a {@link VelocityProfile} to create a Velocity server.
+     *
+     * @param profile The {@link VelocityProfile} to be processed.
+     * @return true if the process is successful, false otherwise.
+     */
     @Override
     public boolean process(@NotNull VelocityProfile profile) {
         DownloadableFileImage fileImage = dataBootstrap.getLastestBuild(FileImage.ImageType.VELOCITY).orElse(null);

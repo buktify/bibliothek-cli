@@ -1,7 +1,17 @@
 package org.buktify.bibliothekcli.command.processor;
 
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * Base interface for command handling
+ */
 public interface CommandProcessor {
 
-    void process(String command);
+    /**
+     * Handles given command
+     *
+     * @param command command string
+     */
+    void process(@NotNull String command);
 
 }

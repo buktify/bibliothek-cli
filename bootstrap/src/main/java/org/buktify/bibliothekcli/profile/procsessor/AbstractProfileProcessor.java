@@ -17,6 +17,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * An abstract base class for {@link ProfileProcessor} implementation,
+ * providing utility methods for common file operations.
+ */
 @FieldDefaults(makeFinal = true, level = AccessLevel.PROTECTED)
 @RequiredArgsConstructor
 public abstract class AbstractProfileProcessor {
@@ -24,6 +28,14 @@ public abstract class AbstractProfileProcessor {
     TerminalWriter writer;
     DataBootstrap dataBootstrap;
 
+    /**
+     * Performs base file actions for the specified server directory and downloadable file image.
+     * It creates server directory, downloads and validates server jar.
+     *
+     * @param serverDirectory the server directory to create
+     * @param fileImage       the file image to download
+     * @return true if the file actions were performed successfully, false otherwise
+     */
     @SneakyThrows
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean performBaseFileActions(@NotNull String serverDirectory, @NotNull DownloadableFileImage fileImage) {
@@ -41,7 +53,12 @@ public abstract class AbstractProfileProcessor {
         return true;
     }
 
-
+    /**
+     * Adds the specified server data to the Velocity configuration file.
+     *
+     * @param serverData         the server data to add. (ip:port)
+     * @param velocityConfigFile the Velocity configuration file (velocity.toml)
+     */
     @SneakyThrows
     protected void addServer(@NotNull String serverData, @NotNull File velocityConfigFile) {
         ArrayList<String> lines = new ArrayList<>(Arrays.stream(FileUtils.readFileToString(velocityConfigFile, "UTF-8").split("\\r?\\n")).toList());

@@ -131,6 +131,4 @@ public class FileImageDataBootstrap implements DataBootstrap, ApplicationContext
     public void setApplicationContext(@NotNull ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = (ConfigurableApplicationContext) applicationContext;
     }
-
-
 }
