@@ -12,14 +12,11 @@ import org.buktify.cli.reader.input.InputType;
 import org.buktify.cli.writer.TerminalWriter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
 
 /**
  * Main class, that handles command line input
@@ -37,9 +34,7 @@ public class CommandBootstrap implements CommandLineRunner, ApplicationContextAw
     DataBootstrap dataBootstrap;
     @NonFinal
     ConfigurableApplicationContext applicationContext;
-    @NonFinal
-    @Value("${application.version}")
-    String version;
+
 
     @Override
     public void run(String... args) {
@@ -51,7 +46,7 @@ public class CommandBootstrap implements CommandLineRunner, ApplicationContextAw
         }
         writer.localizedWriteln("booting-message");
         dataBootstrap.init();
-        writer.write(Objects.requireNonNull(Localization.localized("booting-ok")).replaceAll("%version%", version));
+        writer.localizedWriteln("booting-ok");
         String line;
         while (!(line = reader.forceRead(InputType.STRING)).equals("exit")) {
             String[] arguments = line.split(" ");

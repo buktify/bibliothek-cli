@@ -6,10 +6,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class LocaleType extends StringType implements Validatable {
 
-    private final List<String> supportedLocales = List.of("en", "ru");
+    private final List<String> supportedLocales = List.of("ru", "en");
+
 
     @Override
     @SneakyThrows
@@ -25,6 +27,8 @@ public class LocaleType extends StringType implements Validatable {
 
     @Override
     public String getHint() {
-        return "[ru/en]";
+        StringJoiner stringJoiner = new StringJoiner("/", "[", "]");
+        supportedLocales.forEach(stringJoiner::add);
+        return stringJoiner.toString();
     }
 }

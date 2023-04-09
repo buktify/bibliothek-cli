@@ -1,6 +1,6 @@
 {
   "booting-message": "Запускаем приложение, подождите...",
-  "booting-ok": "Готово! Текущая версия: %version%\n",
+  "booting-ok": "Готово!",
   "shutting-down": "Удачи, до новых встреч :3",
   "version-data-message": "Получаем данные версий и билдов для %product%",
   "version-data-error": "Ошибка при получении данных! Пожалуйста, проверьте подключение к сети",
@@ -37,5 +37,10 @@
   "processor-velocity-creating-toml": "Создаём velocity.toml",
   "processor-velocity-creating-toml-error": "Ошибка при создании velocity.toml",
   "velocity-select-flags-opt": "Желаете ли использовать флаги оптимизации",
-  "processor-success": "Ваш профиль успешно обработан. Спасибо, что выбираете нас нас!"
+  "processor-success": "Ваш профиль успешно обработан. Спасибо, что выбираете нас нас!",
+  "current-version": "Текущая версия: %version%",
+  "lastest-version": "Последняя версия: %version%",
+  "release-not-found": "Не удалось получить данные о релизах",
+  "help-message": "Разработано temez и CrazyL3gend\nЕсли у вас есть какие-либо вопросы, см. нашу вики https://buktify.gitbook.io/bibliothek-cli",
+  "invalid-command": "Неизвестная команда, попробуйте \"help\""
 }

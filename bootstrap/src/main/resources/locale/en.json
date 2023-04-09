@@ -1,6 +1,6 @@
 {
   "booting-message": "Launching the application, please wait...",
-  "booting-ok": "Done! Current version: %version%\n",
+  "booting-ok": "Done!",
   "shutting-down": "Good luck, see you soon :3",
   "version-data-message": "Receiving %product% version and build data",
   "version-data-error": "Error getting data! Please check your network connection",
@@ -35,5 +35,10 @@
   "processor-paper-connecting-to-proxy-folder-error": "Error connecting to Velocity: proxy folder not found",
   "processor-paper-connecting-to-proxy-toml-error": "Error connecting to Velocity: velocity.toml not found",
   "processor-paper-connecting-to-proxy-secret-error": "Error connecting to Velocity: forwarding.secret not found",
-  "processor-success": "Successfully processed your profile. Thank you for choosing us!"
+  "processor-success": "Successfully processed your profile. Thank you for choosing us!",
+  "current-version": "Current version: %version%",
+  "lastest-version": "Lastest version: %version%",
+  "release-not-found": "Could not receive release data",
+  "help-message": "Originally developed by temez and CrazyL3gend\nIf you have any questions, see our wiki https://buktify.gitbook.io/bibliothek-cli",
+  "invalid-command": "Invalid command, try \"help\""
 }

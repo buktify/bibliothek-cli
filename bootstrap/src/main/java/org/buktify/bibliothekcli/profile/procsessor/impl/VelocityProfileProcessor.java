@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.nio.file.Paths;
+
 /**
  * Component that processes a {@link VelocityProfile} to create a Velocity server.
  */

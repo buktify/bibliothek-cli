@@ -1,9 +1,12 @@
 package org.buktify.bibliothekcli.command.processor.impl;
 
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.buktify.bibliothekcli.command.action.CommandAction;
 import org.buktify.bibliothekcli.command.processor.CommandProcessor;
+import org.buktify.cli.writer.TerminalWriter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -15,9 +18,12 @@ import org.springframework.stereotype.Component;
  * for handling implemented command
  */
 @Component
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 public class SimpleCommandProcessor implements CommandProcessor, ApplicationContextAware {
 
+    TerminalWriter writer;
+    @NonFinal
     ApplicationContext applicationContext;
 
     /**
@@ -32,14 +38,14 @@ public class SimpleCommandProcessor implements CommandProcessor, ApplicationCont
         try {
             bean = applicationContext.getBean(command + "Action");
         } catch (BeansException beansException) {
-            System.out.println("Invalid command, try \"help\"");
+            writer.localizedWriteln("invalid-command");
             return;
         }
         if (bean instanceof CommandAction commandAction) {
             commandAction.execute();
             return;
         }
-        System.out.println("Invalid command, try \"help\"");
+        writer.localizedWriteln("invalid-command");
     }
 
     /**

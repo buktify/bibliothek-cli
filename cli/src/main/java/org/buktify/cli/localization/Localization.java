@@ -6,10 +6,10 @@ import lombok.experimental.UtilityClass;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
+import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 @UtilityClass
 public class Localization {
@@ -18,8 +18,9 @@ public class Localization {
 
     public boolean init(@NotNull String locale) {
         try {
-            Resource resource = new ClassPathResource("locale/" + locale + ".json");
-            String content = IOUtils.toString(resource.getInputStream(), Charset.defaultCharset());
+            InputStream inputStream = Localization.class.getClassLoader().getResourceAsStream("locale/" + locale + ".json");
+            Objects.requireNonNull(inputStream);
+            String content = IOUtils.toString(inputStream, Charset.defaultCharset());
             localizationJson = JsonParser.parseString(content).getAsJsonObject();
             return true;
         } catch (Exception ignored) {

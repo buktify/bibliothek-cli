@@ -1,3 +1,6 @@
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework:spring-web'
@@ -10,3 +13,8 @@ jar {
         attributes["Main-Class"] = "org.buktify.bibliothekcli.BibliothekCliApplication"
     }
 }
+
+bootJar {
+    archiveBaseName = "bibliothek-cli"
+}
+
